@@ -9,10 +9,12 @@ const userAuth = async (req, res, next) => {
        }
 
        const deCoded = jwt.verify(token, process.env.jwt_secret)
-       req.userId = deCoded.userId
-       req.role = deCoded.role;
+       if(deCoded.role === "owner" || deCoded.role === "staff"){
+        next();
+       }else{
+        res.status(401).json({message : "Unauthorized access"})
+       }
 
-       next();
     }catch(err){
         res.status(401).json({message : "Unauthorized access"})
     }
