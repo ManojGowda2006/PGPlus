@@ -1,4 +1,5 @@
-// roleCheck.js
+const jwt = require('jsonwebtoken')
+
 const roleCheck = (allowedRoles) => {
   return (req, res, next) => {
     const {token} = req.cookies;

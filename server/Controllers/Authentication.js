@@ -1,6 +1,7 @@
 const User = require('../models/User')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
+const Room = require("../models/Room")
 require('dotenv').config()
 
 const register = async (req, res) => {
@@ -16,13 +17,18 @@ const register = async (req, res) => {
 
        const hashedPass =await bcrypt.hash(password, 10);
 
+       const room = await Room.findOne({ doorNumber: roomNumber });
+        if (!room) {
+        return res.status(400).json({ message: "Invalid room number" });
+        }
+
        const user = await User.create({
         fullName,
         email,
         phone,
         password : hashedPass,
         role,
-        roomNumber
+        roomNumber : room._id
        })
 
       const token = jwt.sign(
@@ -38,9 +44,9 @@ const register = async (req, res) => {
         maxAge : 60*60*1000
        })
 
-       res.status(200).json({message : "Registered successfully"})
+       res.status(200).json({message : "Registered successfully", role : user.role})
     }catch(err){
-        res.status(500).json({message : "Internal Server Error"})
+        res.status(500).json({message : "Internal Server Error",err: err})
     }
 }
 
@@ -77,7 +83,7 @@ const logIN = async (req, res) => {
         maxAge : 60*60*1000
        })
 
-       res.status(200).json({message : "LogIn successfully"})
+       res.status(200).json({message : "LogIn successfully", role : user.role})
     }catch(err){
         res.status(500).json({message : "Internal Server Error"})
     }
