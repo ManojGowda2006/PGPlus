@@ -1,0 +1,17 @@
+meta {
+  name: createRoom
+  type: http
+  seq: 3
+}
+
+post {
+  url: http://localhost:5000/api/rooms/
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "doorNumber" : "101"
+  }
+}
