@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import AddRoomForm from "../../components/AddRoom";
+import EditRoomForm from "../../components/EditRoom";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -10,6 +11,8 @@ export default function OwnerRoomManagement() {
   const [delId,setDelId] = useState(null)
   const [Add,setAdd] = useState(false)
   const [tenants,setTenants] = useState([])
+  const [editId, setEditID] = useState(null)
+  const [edit, setEdit] = useState(false)
 
   useEffect(() => {
     const fetch = async () => {
@@ -46,6 +49,8 @@ export default function OwnerRoomManagement() {
         }
         )
         console.log(res.data)
+        const updated = await axios.get(`${API_URL}/rooms`, { withCredentials: true });
+        setRooms(updated.data);
     }catch(err){
       console.log(err.message)
     }
@@ -65,9 +70,15 @@ export default function OwnerRoomManagement() {
       )
       setRooms(prev => prev.filter(r => r._id !== delId));
       console.log(res.data)
+      setDelete(false)
     }catch(err){
       console.log(err)
     }
+  }
+
+  const handleEditClick = (id) => {
+   setEditID(id)
+   setEdit(true)
   }
 
   return (
@@ -108,7 +119,9 @@ export default function OwnerRoomManagement() {
                   )}
                 </td>
                 <td className="p-2 sm:p-3 space-x-2">
-                  <button className="bg-blue-500 hover:bg-blue-600 text-white text-xs sm:text-sm px-3 py-1 rounded">
+                  <button className="bg-blue-500 hover:bg-blue-600 text-white text-xs sm:text-sm px-3 py-1 rounded"
+                  onClick={() => handleEditClick(room._id)}
+                  >
                     Edit
                   </button>
                   <button
@@ -160,12 +173,35 @@ export default function OwnerRoomManagement() {
           onCancel={() => setAdd(false)}
           onSubmit={(roomData) => {
             console.log(roomData);
-            // Send to API...
             AddRoom(roomData)
             setAdd(false);
           }}
         />
       )}
+      {edit && (
+  <EditRoomForm
+    room={rooms.find(r => r._id === editId)}
+    tenants={tenants}
+    onCancel={() => setEdit(false)}
+    onSubmit={async ({ roomId, tenants }) => {
+      try {
+        const res = await axios.put(
+          `${API_URL}/rooms/${roomId}`,
+          { tenants },
+          { withCredentials: true }
+        );
+        console.log(res.data);
+        const updated = await axios.get(`${API_URL}/rooms`, { withCredentials: true });
+        setRooms(updated.data);
+        setEdit(false);
+      } catch (err) {
+        console.error(err);
+      }
+    }}
+  />
+  )}
+
+
     </div>
   );
 }
