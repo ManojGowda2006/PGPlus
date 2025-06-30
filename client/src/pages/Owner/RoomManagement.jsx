@@ -27,7 +27,7 @@ export default function OwnerRoomManagement() {
       }
     };
     fetch();
-  }, []);
+  }, []); 
 
   const handleAddClick = async() => {
     setAdd(true)

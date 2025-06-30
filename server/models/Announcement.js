@@ -5,7 +5,7 @@ const AnnouncementSchema = new mongoose.Schema({
   content: { type: String, required: true },
   type: {
     type: String,
-    enum: ["news", "food-menu"],
+    enum: ["news", "menu"],
     default: "news"
   },
 

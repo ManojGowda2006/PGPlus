@@ -25,6 +25,13 @@ const updateRoom = async (req, res) => {
     if (!room) {
       return res.status(404).json({ message: 'Room not found' });
     }
+      await User.updateMany({ roomNumber: roomId }, { $set: { roomNumber: null } });
+
+
+    await User.updateMany(
+      { _id: { $in: tenants } },
+      { $set: { roomNumber: roomId } }
+    );
 
     res.json({ message: 'Room updated', room });
   } catch (error) {

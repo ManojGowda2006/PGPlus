@@ -1,10 +1,21 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import axios from 'axios'
+const API_URL = import.meta.env.VITE_API_URL
 
 export default function OwnerTenantManagement() {
-  const [tenants, setTenants] = useState([
-    { id: 1, name: "John Doe", room: "101" },
-    { id: 2, name: "Jane Smith", room: "102" },
-  ]);
+  const [tenants, setTenants] = useState([]);
+
+  useEffect(() => {
+    const fetch = async () => {
+      const res = await axios.get(
+        `${API_URL}/rooms/tenants`,{
+        withCredentials : true
+      }
+      )
+      setTenants(res.data.tenants)
+    }
+    fetch();
+  },[])
 
   return (
     <div className="p-6">
@@ -15,23 +26,21 @@ export default function OwnerTenantManagement() {
             <tr>
               <th className="p-2 text-left">Name</th>
               <th className="p-2 text-left">Room</th>
-              <th className="p-2">Actions</th>
+              <th className="p-2 text-left">Actions</th>
             </tr>
           </thead>
           <tbody>
             {tenants.map(tenant => (
-              <tr key={tenant.id} className="border-b">
-                <td className="p-2">{tenant.name}</td>
-                <td className="p-2">{tenant.room}</td>
+              <tr key={tenant._id} className="border-b">
+                <td className="p-2">{tenant.fullName}</td>
+                <td className="p-2">{tenant.roomNumber.doorNumber}</td>
                 <td className="p-2">
-                  <button className="bg-blue-500 text-white px-2 py-1 rounded mr-2">Edit</button>
                   <button className="bg-red-500 text-white px-2 py-1 rounded">Remove</button>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
-        <button className="mt-4 bg-green-500 text-white px-4 py-2 rounded">Add Tenant</button>
       </div>
     </div>
   );
