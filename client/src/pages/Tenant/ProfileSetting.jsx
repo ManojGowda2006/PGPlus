@@ -1,20 +1,68 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import axios from 'axios';
+
+const API_URL = import.meta.env.VITE_API_URL;
 
 export default function ProfileSettings() {
+  const { id } = useParams();
+  const [tenant, setTenant] = useState(null);
+
   const [formData, setFormData] = useState({
-    phone: "1234567890",
-    email: "tenant@example.com",
+    phone: "",
+    email: "",
     password: "",
   });
 
+  // Fetch tenant once
+  useEffect(() => {
+    const fetch = async () => {
+      try {
+        const res = await axios.get(`${API_URL}/tenant`, { withCredentials: true });
+        setTenant(res.data);
+      } catch (err) {
+        console.error("Error fetching tenant:", err.message);
+      }
+    };
+    fetch();
+  }, []);
+
+  // Fill form once tenant data is fetched
+  useEffect(() => {
+    if (tenant) {
+      setFormData({
+        phone: tenant.phone || "",
+        email: tenant.email || "",
+        password: "", // keep blank
+      });
+    }
+  }, [tenant]);
+
   const handleChange = (e) => {
-    setFormData({...formData, [e.target.name]: e.target.value});
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // TODO: send formData to API
-    console.log("Updated profile:", formData);
+    
+    const res = async() => {
+      try{
+        const msg = await axios.post(
+          `${API_URL}/update`,formData,{
+            withCredentials : true
+          }
+        )
+        console.log(msg.data)
+      }catch(err){
+        console.log(err)
+      }
+    }
+    res();
+    setFormData({
+    phone: "",
+    email: "",
+    password: "",
+  })
   };
 
   return (

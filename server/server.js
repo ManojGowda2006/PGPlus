@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 require('dotenv').config();
 
+
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
@@ -29,6 +30,8 @@ app.use('/api/rooms', require('./routes/room'));
 app.use('/api/facilities', require('./routes/facility'));
 app.use('/api/announcements', require('./routes/announcement'));
 app.use('/api/foodpoll', require('./routes/foodPoll'));
+app.use('/api', require('./routes/user'));
+app.use('/api/complaints', require('./routes/complaint'))
 
 // Start
 const PORT = process.env.PORT || 5000;

@@ -39,10 +39,10 @@ function App() {
         {/*Tenant */}
         <Route path="/tenant-dashboard" element={<TenantDashboard/>}/>
         <Route path="/tenant-dashboard/room" element={<TenantRoomDetails />} />
-        <Route path="/tenant-dashboard/complaints" element={<TenantComplaints />} />
+        <Route path="/tenant-dashboard/complaints/:id" element={<TenantComplaints />} />
         <Route path="/tenant-dashboard/announcements" element={<TenantAnnouncements />} />
         <Route path="/tenant-dashboard/foodpoll" element={<FoodPoll />} />
-        <Route path="/tenant-dashboard/profile" element={<ProfileSettings />} />
+        <Route path="/tenant-dashboard/profile/:id" element={<ProfileSettings />} />
         <Route path="/tenant-dashboard/newComplaint" element={<RaiseComplaint />} />        
         {/*Staff */}
         <Route path='/staff-dashboard/' element={<StaffDashboard/>}/>

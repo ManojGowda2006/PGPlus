@@ -2,7 +2,7 @@ const express = require('express');
 const { createRoom, updateRoom, getAllRooms, getMyRoom, deleteRoom } = require('../Controllers/roomController');
 const userAuth = require('../Middleware/middleWare');
 const roleCheck = require('../Middleware/roleCheck');
-const sendTenant = require('../Controllers/user');
+const {sendTenant} = require('../Controllers/user');
 
 const router = express.Router();
 

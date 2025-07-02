@@ -2,16 +2,15 @@ const Complaint = require('../models/Complaint');
 
 const createComplaint = async (req, res) => {
   try {
-    const { title, description, roomNumber } = req.body;
+    const { title, description } = req.body;
     const complaint = await Complaint.create({
       title,
       description,
-      roomNumber,
       raisedBy: req.userId,
     });
     res.status(201).json({ message: 'Complaint submitted', complaint });
   } catch (error) {
-    res.status(500).json({ message: 'Error submitting complaint' });
+    res.status(500).json({ message: 'Error submitting complaint',err:error.message });
   }
 };
 

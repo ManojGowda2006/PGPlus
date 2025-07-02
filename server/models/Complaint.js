@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const ComplaintSchema = new mongoose.Schema({
   raisedBy: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
-  roomNumber: { type: mongoose.Schema.Types.ObjectId, ref: "Room", required: true },
+  roomNumber: { type: mongoose.Schema.Types.ObjectId, ref: "Room" },
   title: { type: String, required: true },
   description: { type: String, required: true },
 

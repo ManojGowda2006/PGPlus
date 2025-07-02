@@ -1,8 +1,10 @@
 import { useState } from "react";
+import axios from 'axios'
+const API_URL = import.meta.env.VITE_API_URL;
 
 export default function RaiseComplaint() {
   const [formData, setFormData] = useState({
-    category: "",
+    title: "",
     description: "",
     image: null,
   });
@@ -15,10 +17,19 @@ export default function RaiseComplaint() {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
-    // TODO: Send formData to API
-    console.log("Complaint submitted:", formData);
+    const res  = await axios.post(
+      `${API_URL}/complaints/`,formData, {
+        withCredentials : true
+      }
+    )
+    console.log(res.data)
+
+    setFormData({title: "",
+    description: "",
+    image: null,
+  })
   };
 
   return (
@@ -30,15 +41,15 @@ export default function RaiseComplaint() {
         <h2 className="text-2xl font-bold text-blue-600 text-center">Raise New Complaint</h2>
 
         <div>
-          <label className="block text-sm font-medium mb-1">Category</label>
+          <label className="block text-sm font-medium mb-1">Title</label>
           <select
-            name="category"
-            value={formData.category}
+            name="title"
+            value={formData.title}
             onChange={handleChange}
             className="w-full border border-gray-300 rounded-lg p-2"
             required
           >
-            <option value="">Select category</option>
+            <option value="">Select Title</option>
             <option value="Maintenance">Maintenance</option>
             <option value="Cleanliness">Cleanliness</option>
             <option value="WiFi">WiFi</option>
