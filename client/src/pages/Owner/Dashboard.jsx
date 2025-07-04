@@ -1,13 +1,11 @@
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";  
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, Legend } from 'recharts';
+import axios from 'axios'
+const API_URL = import.meta.env.VITE_API_URL
 
 const data = [
-  { name: 'Occupied Rooms', value: 45 },
-  { name: 'Available Rooms', value: 15 },
-  { name: 'Pending Complaints', value: 5 },
-  { name: 'Resolved Complaints', value: 10 },
 ];
 
 const COLORS = ['#3b82f6', '#10b981', '#facc15', '#f87171'];
@@ -15,6 +13,54 @@ const COLORS = ['#3b82f6', '#10b981', '#facc15', '#f87171'];
 export default function OwnerDashboard() {
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [totalRooms, setTotalRooms] = useState()
+  const [Occupied, setOccupied] = useState()
+  const [complaints, setComplaints] = useState()
+  const [announcements, setAnnouncements] = useState()
+
+  useEffect(() => {
+    const fetchRooms = async () => {
+      try {
+        const res = await axios.get(`${API_URL}/rooms`, {
+          withCredentials: true,
+        });
+        setTotalRooms(res.data.length); 
+        const occupiedCount = res.data.filter(room => room.status === "occupied").length;
+        setOccupied(occupiedCount);
+      } catch (err) {
+        console.log(err.message);
+      }
+    };
+    const fetchCom = async() => {
+        try{
+          const res = await axios.get(
+            `${API_URL}/complaints`,{
+              withCredentials : true
+            }
+          )
+          let count = 0;
+          for(let i=0; i<res.data.length; i++){
+            if(res.data[i].status === "Pending"){
+              count++;
+            }
+          } 
+          setComplaints(count)
+        }catch(err){
+          console.log(err.message)
+        }
+      }
+    const fetchAnn = async() => {
+      const res = await axios.get(
+        `${API_URL}/announcements`,{
+          withCredentials : true
+        }
+      )
+      setAnnouncements(res.data)
+    }
+    fetchAnn();
+    fetchCom();
+    fetchRooms();
+  },[])
 
   const handleLogout = () => {
     navigate("/login");
@@ -93,7 +139,7 @@ export default function OwnerDashboard() {
       </aside>
 
       {/* Main content */}
-<main className="flex-1 p-6">
+  <main className="flex-1 p-6">
       <h1 className="text-2xl md:text-3xl font-bold mb-2">Welcome, PG Owner!</h1>
       <p className="text-gray-600 mb-6">
         Use the sidebar to manage your PG rooms, tenants, facilities, and announcements.
@@ -103,19 +149,19 @@ export default function OwnerDashboard() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
         <div className="bg-white p-4 rounded-lg shadow hover:shadow-md transition">
           <h2 className="font-semibold mb-1">Total Rooms</h2>
-          <p className="text-blue-600 text-xl">60</p>
+          <p className="text-blue-600 text-xl">{totalRooms && totalRooms}</p>
         </div>
         <div className="bg-white p-4 rounded-lg shadow hover:shadow-md transition">
           <h2 className="font-semibold mb-1">Occupied Rooms</h2>
-          <p className="text-blue-600 text-xl">45</p>
+          <p className="text-blue-600 text-xl">{Occupied && Occupied}</p>
         </div>
         <div className="bg-white p-4 rounded-lg shadow hover:shadow-md transition">
           <h2 className="font-semibold mb-1">Pending Complaints</h2>
-          <p className="text-blue-600 text-xl">5</p>
+          <p className="text-blue-600 text-xl">{complaints && complaints}</p>
         </div>
         <div className="bg-white p-4 rounded-lg shadow hover:shadow-md transition">
           <h2 className="font-semibold mb-1">Active Announcements</h2>
-          <p className="text-blue-600 text-xl">3</p>
+          <p className="text-blue-600 text-xl">{announcements && announcements.length}</p>
         </div>
       </div>
 
