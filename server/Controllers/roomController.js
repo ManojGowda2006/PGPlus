@@ -16,7 +16,7 @@ const createRoom = async (req, res) => {
 };
 
 // Owner: Add or remove tenants from a room
-const updateRoom = async (req, res) => {
+const updateRoom = async (req, res) => {  
   try {
     const { roomId } = req.params;
     const { tenants } = req.body;

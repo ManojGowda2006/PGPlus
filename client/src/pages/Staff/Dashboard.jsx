@@ -15,7 +15,7 @@ export default function StaffDashboard() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const handleLogout = () => {
-    navigate("/login");
+    navigate("/");
   };
 
   return (

@@ -76,9 +76,15 @@ export default function OwnerRoomManagement() {
     }
   }
 
-  const handleEditClick = (id) => {
+  const handleEditClick = async(id) => {
    setEditID(id)
    setEdit(true)
+   const fetch = await axios.get(
+      `${API_URL}/rooms/tenants`,{
+        withCredentials : true
+      }
+    )
+    setTenants(fetch.data.tenants)
   }
 
   return (
@@ -185,7 +191,7 @@ export default function OwnerRoomManagement() {
     onCancel={() => setEdit(false)}
     onSubmit={async ({ roomId, tenants }) => {
       try {
-        const res = await axios.put(
+        const res = await axios.patch(
           `${API_URL}/rooms/${roomId}`,
           { tenants },
           { withCredentials: true }

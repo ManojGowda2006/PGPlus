@@ -11,11 +11,12 @@ export default function AddRoomForm({ tenants, onCancel, onSubmit }) {
       doorNumber: e.target.doorNumber.value,
       type,
       status: e.target.status.value,
-      tenants: type === "Single" ? [tenant1] : [tenant1, tenant2]
+      tenants: [tenant1, tenant2].filter(Boolean)  
     };
     console.log(roomData);
     onSubmit(roomData);
   };
+
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-opacity-30 backdrop-blur-sm">
@@ -62,43 +63,42 @@ export default function AddRoomForm({ tenants, onCancel, onSubmit }) {
         </div>
 
 
-          {type && (
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Tenant 1</label>
-              <select
-                value={tenant1}
-                onChange={(e) => setTenant1(e.target.value)}
-                required
-                className="w-full p-2 border rounded"
-              >
-                <option value="">Select tenant</option>
-                {tenants.map((tenant) => (
-                  <option key={tenant._id} value={tenant._id}>
-                    {tenant.fullName}
-                  </option>
-                ))}
-              </select>
-            </div>
-          )}
+        {type && (
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Tenant 1 (optional)</label>
+            <select
+              value={tenant1}
+              onChange={(e) => setTenant1(e.target.value)}
+              className="w-full p-2 border rounded"
+            >
+              <option value="">Select tenant</option>
+              {tenants.map((tenant) => (
+                <option key={tenant._id} value={tenant._id}>
+                  {tenant.fullName}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
 
-          {type === "Double" && (
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Tenant 2</label>
-              <select
-                value={tenant2}
-                onChange={(e) => setTenant2(e.target.value)}
-                required
-                className="w-full p-2 border rounded"
-              >
-                <option value="">Select tenant</option>
-                {tenants.map((tenant) => (
-                  <option key={tenant._id} value={tenant._id}>
-                    {tenant.fullName}
-                  </option>
-                ))}
-              </select>
-            </div>
-          )}
+        {type === "Double" && (
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Tenant 2 (optional)</label>
+            <select
+              value={tenant2}
+              onChange={(e) => setTenant2(e.target.value)}
+              className="w-full p-2 border rounded"
+            >
+              <option value="">Select tenant</option>
+              {tenants.map((tenant) => (
+                <option key={tenant._id} value={tenant._id}>
+                  {tenant.fullName}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
+
 
           <div className="flex justify-end space-x-2 pt-2">
             <button

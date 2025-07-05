@@ -5,10 +5,8 @@ import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, Legend } from 'recha
 import axios from 'axios'
 const API_URL = import.meta.env.VITE_API_URL
 
-const data = [
-];
 
-const COLORS = ['#3b82f6', '#10b981', '#facc15', '#f87171'];
+const COLORS = ['#6366F1', '#34D399', '#F59E0B', '#EF4444'];
 
 export default function OwnerDashboard() {
   const navigate = useNavigate();
@@ -17,6 +15,14 @@ export default function OwnerDashboard() {
   const [Occupied, setOccupied] = useState()
   const [complaints, setComplaints] = useState()
   const [announcements, setAnnouncements] = useState()
+
+  const data = [
+  { name: 'Occupied Rooms', value: Occupied || 0 },
+  { name: 'Available Rooms', value: (totalRooms - Occupied) || 0 },
+  { name: 'Pending Complaints', value: complaints || 0 },
+  { name: 'Active Announcements', value: announcements?.length || 0 },
+];
+
 
   useEffect(() => {
     const fetchRooms = async () => {
@@ -63,7 +69,7 @@ export default function OwnerDashboard() {
   },[])
 
   const handleLogout = () => {
-    navigate("/login");
+    navigate("/");
   };
 
   return (

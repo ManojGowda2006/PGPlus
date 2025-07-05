@@ -49,7 +49,6 @@ export default function EditRoomForm({ room, tenants, onCancel, onSubmit }) {
               <select
                 value={tenant2}
                 onChange={(e) => setTenant2(e.target.value)}
-                required
                 className="w-full p-2 border rounded"
               >
                 <option value="">Select tenant</option>

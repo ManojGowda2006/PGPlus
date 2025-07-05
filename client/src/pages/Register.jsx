@@ -29,7 +29,7 @@ export default function Register() {
         { withCredentials: true }
       );
       if (res.status === 200) {
-        navigate("/dashboard");
+        navigate("/tenant-dashboard");
       }
     } catch (err) {
       console.error(err);
