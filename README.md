@@ -42,6 +42,9 @@ PGPlus is a full-stack web application designed to manage PG (Paying Guest) acco
 
 PGPlus/
 ├── client/ # React frontend
+
 ├── server/ # Express backend with MongoDB
+
 ├── bruno_files/ # Bruno API collection
+
 └── README.md
