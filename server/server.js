@@ -32,6 +32,7 @@ app.use('/api/announcements', require('./routes/announcement'));
 app.use('/api/foodpoll', require('./routes/foodPoll'));
 app.use('/api', require('./routes/user'));
 app.use('/api/complaints', require('./routes/complaint'))
+app.use('/api/menu', require('./routes/menu'))
 
 // Start
 const PORT = process.env.PORT || 5000;

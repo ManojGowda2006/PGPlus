@@ -5,6 +5,6 @@ const userAuth = require('../Middleware/middleWare');
 const router = express.Router();
 
 router.post('/vote', userAuth, vote);
-router.get('/', userAuth, getPollResults);
+router.get('/:id', userAuth, getPollResults);
 
 module.exports = router;

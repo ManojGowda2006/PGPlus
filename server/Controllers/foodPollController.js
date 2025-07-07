@@ -1,34 +1,69 @@
 const FoodPoll = require('../models/FoodPoll');
+const Menu = require('../models/Menu');
 
+// POST /poll/:menuId - Cast or update vote
 const vote = async (req, res) => {
   try {
-    const { mealTime, date, rating } = req.body;
+    const { menuId } = req.body;
+    const { rating } = req.body;
+    const userId = req.userId;
 
-    let poll = await FoodPoll.findOne({ mealTime, date });
-    if (!poll) {
-      poll = await FoodPoll.create({ mealTime, date, votes: [] });
+    if (!["Good", "Average", "Bad"].includes(rating)) {
+      return res.status(400).json({ message: "Invalid rating" });
     }
 
-    const existingVote = poll.votes.find(v => v.userId.toString() === req.userId);
+    const menu = await Menu.findById(menuId);
+    if (!menu) {
+      return res.status(404).json({ message: "Menu not found" });
+    }
+
+    const existingVote = await FoodPoll.findOne({ user: userId, menu: menuId });
+
     if (existingVote) {
       existingVote.rating = rating;
-    } else {
-      poll.votes.push({ userId: req.userId, rating });
+      await existingVote.save();
+      return res.json({ message: "Vote updated", poll: existingVote });
     }
 
-    await poll.save();
-    res.json({ message: 'Vote submitted', poll });
+    const newVote = await FoodPoll.create({
+      menu: menuId,
+      user: userId,
+      rating,
+    });
+
+    res.status(201).json({ message: "Vote submitted", poll: newVote });
   } catch (error) {
-    res.status(500).json({ message: 'Error submitting vote' });
+    console.error("Vote error:", error);
+    res.status(500).json({ message: "Error submitting vote" });
   }
 };
 
+// GET /poll/:menuId - Get poll results for a menu
 const getPollResults = async (req, res) => {
   try {
-    const polls = await FoodPoll.find();
-    res.json(polls);
+    const { id } = req.params;
+
+    const menu = await Menu.findById(id);
+    if (!menu) {
+      return res.status(404).json({ message: "Menu not found" });
+    }
+
+    const polls = await FoodPoll.find({ menu: id });
+
+    const results = { Good: 0, Average: 0, Bad: 0 };
+    polls.forEach((vote) => {
+      results[vote.rating]++;
+    });
+
+    res.json({
+      menu: id,
+      date: menu.date,
+      totalVotes: polls.length,
+      results,
+    });
   } catch (error) {
-    res.status(500).json({ message: 'Error retrieving polls' });
+    console.error("Poll results error:", error);
+    res.status(500).json({ message: "Error retrieving poll results" });
   }
 };
 
