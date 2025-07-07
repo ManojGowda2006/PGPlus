@@ -19,7 +19,7 @@ PGPlus is a full-stack web application designed to manage PG (Paying Guest) acco
 - Monitor facility condition and food polls
 - Manage tenant complaints
 
-### 🛠️ Staff Functionality _(In Progress)_
+### 🛠️ Staff Functionality 
 - Assigned role-based access (e.g., Maintenance staff)
 - View assigned complaints
 - Update complaint resolution status
