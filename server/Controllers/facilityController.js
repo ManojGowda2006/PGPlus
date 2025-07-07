@@ -2,7 +2,7 @@ const Facility = require('../models/Facility');
 
 const createFacility = async (req, res) => {
   try {
-    const { name, type } = req.body;
+    const { name, type } = req.body; 
     const facility = await Facility.create({ name, type });
     res.status(201).json({ message: 'Facility added', facility });
   } catch (error) {

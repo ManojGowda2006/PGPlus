@@ -15,8 +15,8 @@ const UserSchema = new mongoose.Schema({
   roomNumber: { type: mongoose.Schema.Types.ObjectId, ref: "Room" },
 
   // OTP-based password reset
-  otp: { type: String },
-  otpExpires: { type: Date },
+  otp: { type: String, default : "" },
+  otpExpires: { type: Date, default : "" },
 
 
   createdAt: { type: Date, default: Date.now }

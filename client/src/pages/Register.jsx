@@ -29,7 +29,7 @@ export default function Register() {
         { withCredentials: true }
       );
       if (res.status === 200) {
-        navigate("/tenant-dashboard");
+        navigate("/login");
       }
     } catch (err) {
       console.error(err);
@@ -90,18 +90,21 @@ export default function Register() {
               required
             />
           </div>
-          <div>
-            <label className="block mb-1 text-sm font-medium text-gray-700">Room Number (Door No)</label>
-            <input
-              type="text"
-              name="roomNumber"
-              value={formData.roomNumber}
-              onChange={handleChange}
-              className="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="101"
-              required
-            />
-          </div>
+          {formData.role === "tenant" && (
+            <div>
+              <label className="block mb-1 text-sm font-medium text-gray-700">Room Number (Door No)</label>
+              <input
+                type="text"
+                name="roomNumber"
+                value={formData.roomNumber}
+                onChange={handleChange}
+                className="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="101"
+                required
+              />
+            </div>
+          )}
+
           <div>
             <label className="block mb-1 text-sm font-medium text-gray-700">PG Code</label>
             <input
