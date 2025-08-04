@@ -8,7 +8,7 @@ export default function Landing() {
     <div className="min-h-screen bg-white text-gray-800">
       {/* Header */}
       <header className="flex justify-between items-center p-6 shadow-sm relative">
-        <div className="text-2xl font-bold text-blue-600">PGPluse</div>
+        <div className="text-2xl font-bold text-blue-600">PGPlus</div>
 
         {/* Desktop Nav */}
         <nav className="hidden md:flex gap-6">
