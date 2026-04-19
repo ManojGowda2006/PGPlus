@@ -47,7 +47,7 @@ export default function TenantRoomDetails() {
           <p className="text-gray-600 mb-4">{tenant && tenant.roomNumber.type} Sharing</p>
 
           <p className="font-semibold text-lg mb-2">Rent:</p>
-          <p className="text-blue-600 text-xl">{tenant && tenant.roomNumber.type === "Double" ? "₹8,000 / month" : "₹12,000 / month"}</p>
+          <p className="text-blue-600 text-xl">{tenant && tenant.roomNumber.type === "Double" ? "₹8,000 / month" : "₹12,000 / month"}</p>dghjtgjhtrjh
         </div>
 
         <div className="col-span-1 sm:col-span-2">
